@@ -1,34 +1,156 @@
+import { useEffect, useState } from "react";
 import SectionCard from "../components/SectionCard";
-import { whatsappLogs } from "../data/dashboardData";
+import { useAuth } from "../context/AuthContext";
+import { getMessageLogs } from "../lib/api";
 
 export default function WhatsAppLogsPage() {
+  const { token } = useAuth();
+  const [logs, setLogs] = useState([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1,
+  });
+  const [filters, setFilters] = useState({
+    status: "",
+    search: "",
+  });
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const response = await getMessageLogs(token, {
+          page: pagination.page,
+          status: filters.status,
+          search: filters.search,
+        });
+
+        if (!cancelled) {
+          setLogs(response.data.items);
+          setPagination((current) => ({
+            ...current,
+            totalPages: response.data.pagination.totalPages,
+          }));
+          setError("");
+        }
+      } catch (nextError) {
+        if (!cancelled) {
+          setError(nextError.message);
+        }
+      }
+    }
+
+    void load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [filters.search, filters.status, pagination.page, token]);
+
   return (
     <div className="page-stack">
-      <SectionCard title="Recent WhatsApp Activity">
+      <SectionCard
+        title="Recent WhatsApp Activity"
+        action={
+          <div className="toolbar">
+            <input
+              className="toolbar__search"
+              type="text"
+              placeholder="Search student, parent, standard, or phone"
+              value={filters.search}
+              onChange={(event) => {
+                setPagination((current) => ({ ...current, page: 1 }));
+                setFilters((current) => ({ ...current, search: event.target.value }));
+              }}
+            />
+            <select
+              className="toolbar__select"
+              value={filters.status}
+              onChange={(event) => {
+                setPagination((current) => ({ ...current, page: 1 }));
+                setFilters((current) => ({ ...current, status: event.target.value }));
+              }}
+            >
+              <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="retrying">Retrying</option>
+              <option value="processing">Processing</option>
+              <option value="sent">Sent</option>
+              <option value="failed">Failed</option>
+            </select>
+          </div>
+        }
+      >
         <div className="simple-table">
           <table>
             <thead>
               <tr>
-                <th>Recipient</th>
-                <th>Template</th>
+                <th>Student</th>
+                <th>Standard</th>
+                <th>Parent</th>
+                <th>Phone</th>
+                <th>Type</th>
                 <th>Status</th>
-                <th>Time</th>
+                <th>Retries</th>
+                <th>Updated</th>
               </tr>
             </thead>
             <tbody>
-              {whatsappLogs.map((log) => (
-                <tr key={`${log.recipient}-${log.time}`}>
-                  <td>{log.recipient}</td>
-                  <td>{log.template}</td>
-                  <td>
-                    <span className={`badge badge--${log.status.toLowerCase()}`}>{log.status}</span>
+              {logs.length ? (
+                logs.map((log) => (
+                  <tr key={log._id}>
+                    <td>{log.studentName}</td>
+                    <td>{log.standard || log.className || "-"}</td>
+                    <td>{log.parentName || "-"}</td>
+                    <td>{log.phoneNumber}</td>
+                    <td>{log.messageType || "result"}</td>
+                    <td>
+                      <span className={`badge badge--${log.status.replaceAll("_", "-")}`}>
+                        {log.status}
+                      </span>
+                    </td>
+                    <td>{log.retryCount}</td>
+                    <td>{new Date(log.updatedAt).toLocaleString()}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="table-empty-cell" colSpan="8">
+                    No message logs found
                   </td>
-                  <td>{log.time}</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
+
+        <div className="pager">
+          <button
+            className="btn-secondary"
+            disabled={pagination.page <= 1}
+            onClick={() =>
+              setPagination((current) => ({ ...current, page: current.page - 1 }))
+            }
+          >
+            Previous
+          </button>
+          <span>
+            Page {pagination.page} of {pagination.totalPages}
+          </span>
+          <button
+            className="btn-secondary"
+            disabled={pagination.page >= pagination.totalPages}
+            onClick={() =>
+              setPagination((current) => ({ ...current, page: current.page + 1 }))
+            }
+          >
+            Next
+          </button>
+        </div>
+
+        {error ? <div className="alert alert--error">{error}</div> : null}
       </SectionCard>
     </div>
   );

@@ -1,6 +1,24 @@
-import { BellIcon, ChevronDownIcon, MenuIcon, WhatsAppIcon } from "./icons";
+import { MenuIcon, WhatsAppIcon } from "./icons";
 
-export default function Topbar({ title, onMenuClick }) {
+function resolveStatusMeta(status) {
+  switch (status) {
+    case "connected":
+      return { label: "WhatsApp Connected", tone: "green" };
+    case "qr_waiting":
+      return { label: "QR Waiting", tone: "amber" };
+    case "authenticated":
+    case "reconnecting":
+    case "initializing":
+      return { label: "Connecting", tone: "amber" };
+    default:
+      return { label: "WhatsApp Offline", tone: "red" };
+  }
+}
+
+export default function Topbar({ title, onMenuClick, user, whatsappStatus, onSignOut }) {
+  const statusMeta = resolveStatusMeta(whatsappStatus?.status);
+  const initial = user?.email?.charAt(0)?.toUpperCase() || "A";
+
   return (
     <header className="topbar">
       <div className="topbar__title-group">
@@ -13,22 +31,19 @@ export default function Topbar({ title, onMenuClick }) {
       <div className="topbar__actions">
         <div className="whatsapp-chip">
           <WhatsAppIcon className="icon icon--sm" />
-          <span className="status-dot status-dot--green" />
-          <span>WhatsApp Connected</span>
+          <span className={`status-dot status-dot--${statusMeta.tone}`} />
+          <span>{statusMeta.label}</span>
         </div>
 
-        <button className="icon-button icon-button--badge">
-          <BellIcon className="icon icon--sm" />
-          <span className="notification-badge">3</span>
-        </button>
-
         <div className="profile-chip">
-          <span className="profile-chip__avatar">A</span>
+          <span className="profile-chip__avatar">{initial}</span>
           <div>
-            <strong>Admin</strong>
-            <span>Super Admin</span>
+            <strong>{user?.email || "Admin"}</strong>
+            <span>{whatsappStatus?.phoneNumber || "School Administrator"}</span>
           </div>
-          <ChevronDownIcon className="icon icon--xs" />
+          <button className="profile-chip__action" onClick={onSignOut}>
+            Sign Out
+          </button>
         </div>
       </div>
     </header>

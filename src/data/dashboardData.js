@@ -1,10 +1,9 @@
 export const navItems = [
   { label: "Dashboard", path: "/dashboard", icon: "dashboard" },
-  { label: "Faculty", path: "/faculty", icon: "faculty" },
   { label: "Attendance", path: "/attendance", icon: "attendance" },
-  { label: "Message Template", path: "/message-template", icon: "template" },
-  { label: "WhatsApp Logs", path: "/whatsapp-logs", icon: "whatsapp" },
-  { label: "Reports", path: "/reports", icon: "reports" },
+  { label: "Student Import", path: "/bulk-upload", icon: "template" },
+  { label: "WhatsApp QR", path: "/whatsapp", icon: "whatsapp" },
+  { label: "Delivery Logs", path: "/whatsapp-logs", icon: "reports" },
   { label: "Settings", path: "/settings", icon: "settings" },
 ];
 

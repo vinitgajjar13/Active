@@ -10,7 +10,6 @@ import {
   ReportsIcon,
   SettingsIcon,
   TemplateIcon,
-  WhatsAppIcon,
 } from "./icons";
 
 const iconMap = {
@@ -23,16 +22,16 @@ const iconMap = {
   settings: SettingsIcon,
 };
 
-export default function Sidebar({ mobileOpen, onClose }) {
+export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
   return (
     <>
       <div className={`sidebar-backdrop ${mobileOpen ? "is-visible" : ""}`} onClick={onClose} />
       <aside className={`sidebar ${mobileOpen ? "is-open" : ""}`}>
         <div className="sidebar__brand">
-          <BrandIcon className="sidebar__brand-icon" />
-          <div>
-            <h1>School Notifier</h1>
-            <p>WhatsApp Automation</p>
+          <BrandIcon className="sidebar__brand-mark" />
+          <div className="sidebar__brand-copy">
+            <strong>Active</strong>
+            <span>Education</span>
           </div>
         </div>
 
@@ -55,20 +54,12 @@ export default function Sidebar({ mobileOpen, onClose }) {
           })}
         </nav>
 
-        <div className="sidebar__promo">
-          <div className="sidebar__promo-art">
-            <div className="sidebar__promo-bubble">
-              <WhatsAppIcon className="icon icon--promo" />
-            </div>
-          </div>
-          <h3>Automate WhatsApp messages instantly</h3>
-          <button className="sidebar__promo-link">Learn More</button>
+        <div className="sidebar__footer">
+          <button className="sidebar__signout" onClick={onSignOut}>
+            <LogOutIcon className="icon icon--sm" />
+            <span>Sign Out</span>
+          </button>
         </div>
-
-        <button className="sidebar__signout">
-          <LogOutIcon className="icon icon--sm" />
-          <span>Sign Out</span>
-        </button>
       </aside>
     </>
   );
