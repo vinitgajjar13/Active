@@ -52,7 +52,7 @@ function DashboardTrendChart({ data }) {
   const height = 300;
   const left = 26;
   const right = 24;
-  const top = 20;
+  const top = 56;
   const bottom = 36;
   const innerWidth = width - left - right;
   const innerHeight = height - top - bottom;
@@ -73,13 +73,12 @@ function DashboardTrendChart({ data }) {
 
   const buildPath = (points) =>
     points
-      .map((point, index) => `${index === 0 ? "M" : "C"} ${
-        index === 0
-          ? `${point.x} ${point.y}`
-          : `${(points[index - 1].x + point.x) / 2} ${points[index - 1].y},
+      .map((point, index) => `${index === 0 ? "M" : "C"} ${index === 0
+        ? `${point.x} ${point.y}`
+        : `${(points[index - 1].x + point.x) / 2} ${points[index - 1].y},
              ${(points[index - 1].x + point.x) / 2} ${point.y},
              ${point.x} ${point.y}`
-      }`)
+        }`)
       .join(" ");
 
   const attendancePath = buildPath(attendancePoints);
@@ -112,9 +111,8 @@ function DashboardTrendChart({ data }) {
         })}
 
         <path
-          d={`${attendancePath} L ${attendancePoints[attendancePoints.length - 1].x} ${
-            height - bottom
-          } L ${attendancePoints[0].x} ${height - bottom} Z`}
+          d={`${attendancePath} L ${attendancePoints[attendancePoints.length - 1].x} ${height - bottom
+            } L ${attendancePoints[0].x} ${height - bottom} Z`}
           fill="url(#flowTrendArea)"
         />
         <path d={messagesPath} fill="none" stroke="#c8d1df" strokeWidth="3" strokeLinecap="round" />
@@ -131,7 +129,7 @@ function DashboardTrendChart({ data }) {
         <circle cx={hoverPoint.x} cy={hoverPoint.y} r="6" fill="#2f89ff" />
         <circle cx={hoverPoint.x} cy={hoverPoint.y} r="13" fill="rgba(47,137,255,0.14)" />
 
-        <g transform={`translate(${hoverPoint.x - 56}, ${hoverPoint.y - 56})`}>
+        <g transform={`translate(${hoverPoint.x - 56}, ${hoverPoint.y - 48})`}>
           <rect width="112" height="42" rx="12" fill="#1577f3" />
           <text x="56" y="17" fill="rgba(255,255,255,0.72)" fontSize="10" textAnchor="middle">
             Students Marked
