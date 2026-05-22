@@ -68,18 +68,3 @@ export default function LineChart({ data, compact = false }) {
     </div>
   );
 }
-
-{
-  points.map((point) => (
-    <g key={point.day}>
-      <circle cx={point.x} cy={point.y} r="5" fill="white" stroke="var(--blue-600)" strokeWidth="2.5" />
-      <text x={point.x} y={height - 12} textAnchor="middle" className="line-chart__label">
-        {point.day}
-      </text>
-    </g>
-  ))
-}
-      </svg >
-    </div >
-  );
-}

@@ -83,7 +83,8 @@ export default function WhatsAppLogsPage() {
           </div>
         }
       >
-        <div className="simple-table">
+        {/* Desktop View */}
+        <div className="simple-table simple-table--desktop">
           <table>
             <thead>
               <tr>
@@ -124,6 +125,49 @@ export default function WhatsAppLogsPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile View */}
+        <div className="simple-table--mobile log-mobile-list">
+          {logs.length ? (
+            logs.map((log) => (
+              <div key={log._id} className="log-mobile-card">
+                <div className="log-mobile-card__header">
+                  <div>
+                    <strong className="log-mobile-card__student">{log.studentName}</strong>
+                    <span className="log-mobile-card__class">{log.standard || log.className || "-"}</span>
+                  </div>
+                  <span className={`badge badge--${log.status.replaceAll("_", "-")}`}>
+                    {log.status}
+                  </span>
+                </div>
+                <div className="log-mobile-card__details">
+                  <div>
+                    <span>Parent</span>
+                    <strong>{log.parentName || "-"}</strong>
+                  </div>
+                  <div>
+                    <span>Phone</span>
+                    <strong>{log.phoneNumber}</strong>
+                  </div>
+                  <div>
+                    <span>Type</span>
+                    <strong>{log.messageType || "result"}</strong>
+                  </div>
+                  <div>
+                    <span>Retries</span>
+                    <strong>{log.retryCount}</strong>
+                  </div>
+                </div>
+                <div className="log-mobile-card__footer">
+                  <span>Updated</span>
+                  <strong>{new Date(log.updatedAt).toLocaleString()}</strong>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="table-empty-cell">No message logs found</div>
+          )}
         </div>
 
         <div className="pager">

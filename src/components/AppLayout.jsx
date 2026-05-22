@@ -1,9 +1,16 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import { useAuth } from "../context/AuthContext";
 import { getWhatsAppStatus } from "../lib/api";
+import {
+  DashboardIcon,
+  AttendanceIcon,
+  TemplateIcon,
+  WhatsAppIcon,
+  ReportsIcon,
+} from "./icons";
 
 const pageTitles = {
   "/dashboard": "Dashboard",
@@ -71,6 +78,45 @@ export default function AppLayout() {
           </main>
         </div>
       </div>
+
+      {/* Mobile Sticky Tab Bar */}
+      <nav className="mobile-tab-bar">
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) => `mobile-tab-item ${isActive ? "is-active" : ""}`}
+        >
+          <DashboardIcon className="icon" />
+          <span>Dashboard</span>
+        </NavLink>
+        <NavLink
+          to="/attendance"
+          className={({ isActive }) => `mobile-tab-item ${isActive ? "is-active" : ""}`}
+        >
+          <AttendanceIcon className="icon" />
+          <span>Attendance</span>
+        </NavLink>
+        <NavLink
+          to="/bulk-upload"
+          className={({ isActive }) => `mobile-tab-item ${isActive ? "is-active" : ""}`}
+        >
+          <TemplateIcon className="icon" />
+          <span>Import</span>
+        </NavLink>
+        <NavLink
+          to="/whatsapp"
+          className={({ isActive }) => `mobile-tab-item ${isActive ? "is-active" : ""}`}
+        >
+          <WhatsAppIcon className="icon" />
+          <span>Session</span>
+        </NavLink>
+        <NavLink
+          to="/whatsapp-logs"
+          className={({ isActive }) => `mobile-tab-item ${isActive ? "is-active" : ""}`}
+        >
+          <ReportsIcon className="icon" />
+          <span>Logs</span>
+        </NavLink>
+      </nav>
     </div>
   );
 }

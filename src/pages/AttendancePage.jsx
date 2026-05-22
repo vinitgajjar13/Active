@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import SectionCard from "../components/SectionCard";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -24,8 +24,18 @@ function buildCounts(items) {
 
 export default function AttendancePage() {
   const { token } = useAuth();
+  const formRef = useRef(null);
   const [overview, setOverview] = useState(null);
   const [selectedStandard, setSelectedStandard] = useState("LKG");
+
+  const handleStandardSelect = (stdValue) => {
+    setSelectedStandard(stdValue);
+    if (window.innerWidth <= 760) {
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  };
   const [attendanceDate, setAttendanceDate] = useState(getTodayValue());
   const [students, setStudents] = useState([]);
   const [standardCounts, setStandardCounts] = useState(buildCounts([]));
@@ -168,7 +178,7 @@ export default function AttendancePage() {
               key={item.value}
               type="button"
               className={`standard-card ${selectedStandard === item.value ? "is-active" : ""}`}
-              onClick={() => setSelectedStandard(item.value)}
+              onClick={() => handleStandardSelect(item.value)}
             >
               <span className="standard-card__label">{item.label}</span>
               <strong className="standard-card__value">{item.count}</strong>
@@ -178,7 +188,7 @@ export default function AttendancePage() {
         </div>
       </SectionCard>
 
-      <div className="split-grid">
+      <div className="split-grid" ref={formRef}>
         <SectionCard title={`${getStandardHeading(selectedStandard)} Attendance`}>
           <form className="form-stack" onSubmit={handleSubmit}>
             <div className="form-grid">
@@ -279,7 +289,8 @@ export default function AttendancePage() {
       </div>
 
       <SectionCard title={`${getStandardHeading(selectedStandard)} Student Attendance List`}>
-        <div className="simple-table">
+        {/* Desktop View */}
+        <div className="simple-table simple-table--desktop">
           <table>
             <thead>
               <tr>
@@ -348,10 +359,73 @@ export default function AttendancePage() {
             </tbody>
           </table>
         </div>
+
+        {/* Mobile View */}
+        <div className="simple-table--mobile student-mobile-list">
+          {loadingStudents ? (
+            <div className="table-empty-cell">Loading students...</div>
+          ) : filteredStudents.length ? (
+            filteredStudents.map((student) => (
+              <div key={student._id} className="student-mobile-card">
+                <div className="student-mobile-card__header">
+                  <span className="student-mobile-card__roll">Roll #{student.rollNumber}</span>
+                  <strong className="student-mobile-card__name">{student.studentName}</strong>
+                </div>
+                <div className="student-mobile-card__details">
+                  <div>
+                    <span>Parent</span>
+                    <strong>{student.parentName}</strong>
+                  </div>
+                  <div>
+                    <span>WhatsApp</span>
+                    <strong>{student.parentPhoneNumber}</strong>
+                  </div>
+                </div>
+                <div className="student-mobile-card__actions">
+                  <div className="attendance-radio-group">
+                    <label className="attendance-radio">
+                      <input
+                        type="radio"
+                        name={`attendance-mobile-${student._id}`}
+                        checked={attendanceMap[student._id] !== "absent"}
+                        onChange={() =>
+                          setAttendanceMap((current) => ({
+                            ...current,
+                            [student._id]: "present",
+                          }))
+                        }
+                      />
+                      <span>Present</span>
+                    </label>
+                    <label className="attendance-radio attendance-radio--absent">
+                      <input
+                        type="radio"
+                        name={`attendance-mobile-${student._id}`}
+                        checked={attendanceMap[student._id] === "absent"}
+                        onChange={() =>
+                          setAttendanceMap((current) => ({
+                            ...current,
+                            [student._id]: "absent",
+                          }))
+                        }
+                      />
+                      <span>Absent</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="table-empty-cell">
+              No students found for {getStandardHeading(selectedStandard)}
+            </div>
+          )}
+        </div>
       </SectionCard>
 
       <SectionCard title="Recent Attendance History">
-        <div className="simple-table">
+        {/* Desktop View */}
+        <div className="simple-table simple-table--desktop">
           <table>
             <thead>
               <tr>
@@ -384,6 +458,40 @@ export default function AttendancePage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile View */}
+        <div className="simple-table--mobile history-mobile-list">
+          {overview?.recentSessions?.length ? (
+            overview.recentSessions.map((session) => (
+              <div key={session._id} className="history-mobile-card">
+                <div className="history-mobile-card__header">
+                  <strong>{session.standard}</strong>
+                  <span>{session.attendanceDateKey}</span>
+                </div>
+                <div className="history-mobile-card__stats">
+                  <div>
+                    <span>Total</span>
+                    <strong>{session.totalStudents}</strong>
+                  </div>
+                  <div>
+                    <span>Present</span>
+                    <strong>{session.presentCount}</strong>
+                  </div>
+                  <div>
+                    <span>Absent</span>
+                    <strong>{session.absentCount}</strong>
+                  </div>
+                  <div>
+                    <span>Messages</span>
+                    <strong>{session.messageCount}</strong>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="table-empty-cell">No attendance records yet</div>
+          )}
         </div>
       </SectionCard>
     </div>

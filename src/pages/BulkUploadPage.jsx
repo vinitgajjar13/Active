@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import SectionCard from "../components/SectionCard";
 import { useAuth } from "../context/AuthContext";
 import { getStudentOverview, getStudents, saveStudent } from "../lib/api";
@@ -22,7 +22,17 @@ function buildCounts(items) {
 
 export default function BulkUploadPage() {
   const { token } = useAuth();
+  const formRef = useRef(null);
   const [selectedStandard, setSelectedStandard] = useState("LKG");
+
+  const handleStandardSelect = (stdValue) => {
+    setSelectedStandard(stdValue);
+    if (window.innerWidth <= 760) {
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  };
   const [students, setStudents] = useState([]);
   const [standardCounts, setStandardCounts] = useState(buildCounts([]));
   const [form, setForm] = useState(EMPTY_FORM);
@@ -114,7 +124,7 @@ export default function BulkUploadPage() {
               key={item.value}
               type="button"
               className={`standard-card ${selectedStandard === item.value ? "is-active" : ""}`}
-              onClick={() => setSelectedStandard(item.value)}
+              onClick={() => handleStandardSelect(item.value)}
             >
               <span className="standard-card__label">{item.label}</span>
               <strong className="standard-card__value">{item.count}</strong>
@@ -124,7 +134,7 @@ export default function BulkUploadPage() {
         </div>
       </SectionCard>
 
-      <div className="split-grid">
+      <div className="split-grid" ref={formRef}>
         <SectionCard title={`${getStandardHeading(selectedStandard)} Student Entry`}>
           <form className="form-stack" onSubmit={handleSubmit}>
             <div className="inline-note">
@@ -225,7 +235,8 @@ export default function BulkUploadPage() {
           </div>
         }
       >
-        <div className="simple-table">
+        {/* Desktop View */}
+        <div className="simple-table simple-table--desktop">
           <table>
             <thead>
               <tr>
@@ -260,6 +271,36 @@ export default function BulkUploadPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile View */}
+        <div className="simple-table--mobile student-mobile-list">
+          {loading ? (
+            <div className="table-empty-cell">Loading students...</div>
+          ) : filteredStudents.length ? (
+            filteredStudents.map((student) => (
+              <div key={student._id} className="student-mobile-card">
+                <div className="student-mobile-card__header">
+                  <span className="student-mobile-card__roll">Roll #{student.rollNumber}</span>
+                  <strong className="student-mobile-card__name">{student.studentName}</strong>
+                </div>
+                <div className="student-mobile-card__details">
+                  <div>
+                    <span>Parent</span>
+                    <strong>{student.parentName}</strong>
+                  </div>
+                  <div>
+                    <span>WhatsApp</span>
+                    <strong>{student.parentPhoneNumber}</strong>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="table-empty-cell">
+              No students added in {getStandardHeading(selectedStandard)} yet
+            </div>
+          )}
         </div>
       </SectionCard>
     </div>

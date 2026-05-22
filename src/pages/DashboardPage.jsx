@@ -1,12 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  AttendanceIcon,
   CalendarIcon,
   CheckIcon,
   ClockIcon,
   CloseIcon,
   FacultyIcon,
-  InfoIcon,
   WhatsAppIcon,
 } from "../components/icons";
 import { useAuth } from "../context/AuthContext";
@@ -158,80 +156,7 @@ function DashboardTrendChart({ data }) {
   );
 }
 
-function AttendanceBars({ stats }) {
-  const items = [
-    { label: "Students", value: stats?.totals?.students ?? 0, tone: "blue" },
-    { label: "Present", value: stats?.totals?.presentToday ?? 0, tone: "cyan" },
-    { label: "Absent", value: stats?.totals?.absentToday ?? 0, tone: "slate" },
-    { label: "Pending", value: stats?.totals?.pending ?? 0, tone: "blue-soft" },
-  ];
-  const maxValue = Math.max(...items.map((item) => item.value), 1);
 
-  return (
-    <div className="flow-bars">
-      {items.map((item) => (
-        <div key={item.label} className="flow-bars__item">
-          <div className="flow-bars__track">
-            <div
-              className={`flow-bars__fill flow-bars__fill--${item.tone}`}
-              style={{ height: `${Math.max((item.value / maxValue) * 100, item.value ? 18 : 8)}%` }}
-            />
-          </div>
-          <strong>{formatCount(item.value)}</strong>
-          <span>{item.label}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function SnapshotList({ stats }) {
-  const items = [
-    {
-      icon: <FacultyIcon className="icon icon--sm" />,
-      label: "Standards Active",
-      value: `${formatCount(stats?.totals?.standards)} running`,
-      progress: Math.min((stats?.totals?.standards ?? 0) * 8, 100),
-    },
-    {
-      icon: <AttendanceIcon className="icon icon--sm" />,
-      label: "Sessions Submitted",
-      value: `${formatCount(stats?.today?.sessionsMarked)} today`,
-      progress: Math.min((stats?.today?.sessionsMarked ?? 0) * 18, 100),
-    },
-    {
-      icon: <CheckIcon className="icon icon--sm" />,
-      label: "Messages Sent",
-      value: `${formatCount(stats?.totals?.sent)} delivered`,
-      progress: Math.min((stats?.totals?.sent ?? 0) * 8, 100),
-    },
-    {
-      icon: <CloseIcon className="icon icon--sm" />,
-      label: "Failed Attempts",
-      value: `${formatCount(stats?.totals?.failed)} flagged`,
-      progress: Math.min((stats?.totals?.failed ?? 0) * 30, 100),
-    },
-  ];
-
-  return (
-    <div className="flow-progress-list">
-      {items.map((item) => (
-        <div key={item.label} className="flow-progress-row">
-          <div className="flow-progress-row__meta">
-            <span className="flow-progress-row__icon">{item.icon}</span>
-            <div>
-              <strong>{item.label}</strong>
-              <span>{item.value}</span>
-            </div>
-          </div>
-          <div className="flow-progress-row__bar">
-            <div style={{ width: `${item.progress}%` }} />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function StatusPanel({ stats }) {
   const statusTone = stats?.whatsapp?.status === "connected" ? "connected" : "waiting";
@@ -372,6 +297,7 @@ export default function DashboardPage() {
 
   return (
     <div className="dashboard-flow">
+      {error ? <div className="alert alert--error">{error}</div> : null}
       <div className="dashboard-flow__summary">
         {summaryCards.map((card) => (
           <SummaryCard key={card.label} {...card} />
@@ -396,35 +322,6 @@ export default function DashboardPage() {
         <StatusPanel stats={stats} />
       </div>
 
-      <div className="dashboard-flow__bottom">
-        <section className="flow-card">
-          <div className="flow-card__header">
-            <div>
-              <h3>Attendance Mix</h3>
-              <span>Today across the currently loaded school data</span>
-            </div>
-          </div>
-          <AttendanceBars stats={stats} />
-        </section>
-
-        <section className="flow-card">
-          <div className="flow-card__header">
-            <div>
-              <h3>Operations Pulse</h3>
-              <span>Same current information in quick progress form</span>
-            </div>
-          </div>
-          <SnapshotList stats={stats} />
-        </section>
-      </div>
-
-      <div className="flow-note">
-        <InfoIcon className="icon icon--sm" />
-        <span>
-          {error ||
-            "Import student data standard-wise, mark absent students from attendance, and Active will queue WhatsApp messages only for selected absent parents."}
-        </span>
-      </div>
     </div>
   );
 }
