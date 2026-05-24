@@ -177,7 +177,7 @@ export default function AttendancePage() {
             <button
               key={item.value}
               type="button"
-              className={`standard-card ${selectedStandard === item.value ? "is-active" : ""}`}
+              className={`standard-card ${selectedStandard === item.value ? "is-active" : ""} ${item.count > 0 ? "has-students" : ""}`}
               onClick={() => handleStandardSelect(item.value)}
             >
               <span className="standard-card__label">{item.label}</span>
