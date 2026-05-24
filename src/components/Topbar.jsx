@@ -17,7 +17,6 @@ function resolveStatusMeta(status) {
 
 export default function Topbar({ title, onMenuClick, user, whatsappStatus, onSignOut }) {
   const statusMeta = resolveStatusMeta(whatsappStatus?.status);
-  const initial = user?.email?.charAt(0)?.toUpperCase() || "A";
 
   return (
     <header className="topbar">
@@ -38,17 +37,6 @@ export default function Topbar({ title, onMenuClick, user, whatsappStatus, onSig
         <button className="mobile-signout-btn" onClick={onSignOut} title="Sign Out">
           <LogOutIcon className="icon icon--sm" />
         </button>
-
-        <div className="profile-chip">
-          <span className="profile-chip__avatar">{initial}</span>
-          <div>
-            <strong>{user?.email || "Admin"}</strong>
-            <span>{whatsappStatus?.phoneNumber || "School Administrator"}</span>
-          </div>
-          <button className="profile-chip__action" onClick={onSignOut}>
-            Sign Out
-          </button>
-        </div>
       </div>
     </header>
   );

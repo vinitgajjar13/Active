@@ -152,9 +152,15 @@ button {
 }
 
 .sidebar__signout {
-  color: #406591;
-  border: 1px solid #dceafb;
-  background: rgba(255, 255, 255, 0.68);
+  color: #e53e3e;
+  border: 1px solid #fed7d7;
+  background: rgba(255, 245, 245, 0.68);
+}
+
+.sidebar__signout:hover {
+  background: rgba(254, 226, 226, 0.6) !important;
+  color: #c53030;
+  border-color: #fca5a5;
 }
 
 .app-shell__content {
