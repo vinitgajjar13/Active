@@ -1,0 +1,12 @@
+const pkg = require('@hugeicons/core-free-icons');
+const keys = Object.keys(pkg);
+console.log('Total icons:', keys.length);
+console.log('Add icons:', keys.filter(k => k.toLowerCase().includes('add')));
+console.log('Plus icons:', keys.filter(k => k.toLowerCase().includes('plus')));
+console.log('Search icons:', keys.filter(k => k.toLowerCase().includes('search')));
+console.log('Delete icons:', keys.filter(k => k.toLowerCase().includes('delete')));
+console.log('Edit icons:', keys.filter(k => k.toLowerCase().includes('edit')));
+console.log('Upload icons:', keys.filter(k => k.toLowerCase().includes('upload')));
+console.log('Download icons:', keys.filter(k => k.toLowerCase().includes('download')));
+console.log('Eye/View icons:', keys.filter(k => k.toLowerCase().includes('eye') || k.toLowerCase().includes('view')));
+console.log('Cancel/Close icons:', keys.filter(k => k.toLowerCase().includes('cancel') || k.toLowerCase().includes('close')));

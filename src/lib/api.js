@@ -98,6 +98,10 @@ export function saveStudent(token, body) {
   return request("/students", { method: "POST", token, body });
 }
 
+export function addStudent(token, body) {
+  return request("/students", { method: "POST", token, body });
+}
+
 export function getStudentOverview(token) {
   return request("/students/overview", { token });
 }
@@ -158,4 +162,45 @@ export function getMessageLogs(token, params = {}) {
 
 export function getUploads(token) {
   return request("/messages/uploads", { token });
+}
+
+export function previewImportStudents(token, formData) {
+  return request("/students/import/preview", { method: "POST", token, body: formData });
+}
+
+export function getStudentById(token, id) {
+  return request(`/students/${id}`, { token });
+}
+
+export function editStudent(token, id, body) {
+  return request(`/students/${id}`, { method: "PUT", token, body });
+}
+
+export function deleteStudent(token, id) {
+  return request(`/students/${id}`, { method: "DELETE", token });
+}
+
+export function deleteBulkStudents(token, ids) {
+  return request("/students/bulk", { method: "DELETE", token, body: { ids } });
+}
+
+export function moveBulkStudents(token, ids, standard) {
+  return request("/students/bulk-move", { method: "POST", token, body: { ids, standard } });
+}
+
+export async function exportStudentsRequest(token, body) {
+  const response = await fetch(`${API_BASE_URL}/students/export`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+  
+  if (!response.ok) {
+    throw new Error("Failed to export students");
+  }
+  
+  return response.blob();
 }
