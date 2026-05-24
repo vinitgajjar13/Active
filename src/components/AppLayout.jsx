@@ -9,6 +9,7 @@ import {
   AttendanceIcon,
   TemplateIcon,
   WhatsAppIcon,
+  SettingsIcon,
 } from "./icons";
 
 const pageTitles = {
@@ -107,7 +108,13 @@ export default function AppLayout() {
           <WhatsAppIcon className="icon" />
           <span>Session</span>
         </NavLink>
-
+        <NavLink
+          to="/settings"
+          className={({ isActive }) => `mobile-tab-item ${isActive ? "is-active" : ""}`}
+        >
+          <SettingsIcon className="icon" />
+          <span>Settings</span>
+        </NavLink>
       </nav>
     </div>
   );

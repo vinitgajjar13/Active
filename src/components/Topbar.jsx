@@ -1,4 +1,4 @@
-import { MenuIcon, WhatsAppIcon } from "./icons";
+import { MenuIcon, WhatsAppIcon, LogOutIcon } from "./icons";
 
 function resolveStatusMeta(status) {
   switch (status) {
@@ -29,11 +29,15 @@ export default function Topbar({ title, onMenuClick, user, whatsappStatus, onSig
       </div>
 
       <div className="topbar__actions">
-        <div className="whatsapp-chip">
+        {/* <div className="whatsapp-chip">
           <WhatsAppIcon className="icon icon--sm" />
           <span className={`status-dot status-dot--${statusMeta.tone}`} />
           <span>{statusMeta.label}</span>
-        </div>
+        </div> */}
+
+        <button className="mobile-signout-btn" onClick={onSignOut} title="Sign Out">
+          <LogOutIcon className="icon icon--sm" />
+        </button>
 
         <div className="profile-chip">
           <span className="profile-chip__avatar">{initial}</span>

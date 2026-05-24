@@ -2333,7 +2333,17 @@ button {
   color: var(--blue-600);
 }
 
+.mobile-signout-btn {
+  display: none;
+}
+
 @media (max-width: 760px) {
+
+  .sidebar,
+  .sidebar-backdrop {
+    display: none !important;
+  }
+
   .mobile-tab-bar {
     display: flex;
   }
@@ -2367,6 +2377,11 @@ button {
     justify-content: space-between !important;
   }
 
+  .topbar__title-group,
+  .topbar__actions {
+    width: auto !important;
+  }
+
   .topbar h2 {
     font-size: 1.15rem !important;
     font-weight: 800 !important;
@@ -2375,13 +2390,26 @@ button {
   }
 
   .icon-button--menu {
-    background: #f1f5f9 !important;
-    color: var(--text-strong) !important;
-    border-radius: 10px !important;
-    width: 38px !important;
-    height: 38px !important;
-    display: grid !important;
-    /* force show hamburger button on mobile header */
+    display: none !important;
+  }
+
+  .mobile-signout-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: #fff5f5;
+    color: #e53e3e;
+    border: 1px solid #fed7d7;
+    border-radius: 10px;
+    width: 38px;
+    height: 38px;
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+
+  .mobile-signout-btn:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
   }
 
   .topbar__actions {
@@ -2390,6 +2418,8 @@ button {
     grid-template-columns: none !important;
     order: unset !important;
     align-items: center !important;
+    margin-left: auto !important;
+    justify-content: flex-end !important;
   }
 
   .whatsapp-chip {
