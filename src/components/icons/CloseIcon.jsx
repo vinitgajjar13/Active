@@ -1,11 +1,13 @@
 import React from 'react';
-import BaseIcon from './BaseIcon';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Cancel01Icon } from '@hugeicons/core-free-icons';
 
 export default function CloseIcon(props) {
   return (
-    <BaseIcon {...props}>
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </BaseIcon>
+    <HugeiconsIcon
+      icon={Cancel01Icon}
+      className={props.className}
+      {...props}
+    />
   );
 }

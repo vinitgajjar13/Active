@@ -3,7 +3,6 @@ export const navItems = [
   { label: "Attendance", path: "/attendance", icon: "attendance" },
   { label: "Student Import", path: "/bulk-upload", icon: "template" },
   { label: "WhatsApp QR", path: "/whatsapp", icon: "whatsapp" },
-  { label: "Delivery Logs", path: "/whatsapp-logs", icon: "reports" },
   { label: "Settings", path: "/settings", icon: "settings" },
 ];
 

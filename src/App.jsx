@@ -6,7 +6,6 @@ import BulkUploadPage from "./pages/BulkUploadPage";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
-import WhatsAppLogsPage from "./pages/WhatsAppLogsPage";
 import WhatsAppPage from "./pages/WhatsAppPage";
 
 export default function App() {
@@ -21,7 +20,6 @@ export default function App() {
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/whatsapp" element={<WhatsAppPage />} />
             <Route path="/bulk-upload" element={<BulkUploadPage />} />
-            <Route path="/whatsapp-logs" element={<WhatsAppLogsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>

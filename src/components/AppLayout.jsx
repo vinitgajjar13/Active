@@ -9,7 +9,6 @@ import {
   AttendanceIcon,
   TemplateIcon,
   WhatsAppIcon,
-  ReportsIcon,
 } from "./icons";
 
 const pageTitles = {
@@ -17,7 +16,6 @@ const pageTitles = {
   "/attendance": "Attendance",
   "/whatsapp": "WhatsApp QR",
   "/bulk-upload": "Student Import",
-  "/whatsapp-logs": "Message Logs",
   "/settings": "Settings",
 };
 
@@ -109,13 +107,7 @@ export default function AppLayout() {
           <WhatsAppIcon className="icon" />
           <span>Session</span>
         </NavLink>
-        <NavLink
-          to="/whatsapp-logs"
-          className={({ isActive }) => `mobile-tab-item ${isActive ? "is-active" : ""}`}
-        >
-          <ReportsIcon className="icon" />
-          <span>Logs</span>
-        </NavLink>
+
       </nav>
     </div>
   );

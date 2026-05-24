@@ -1,10 +1,13 @@
 import React from 'react';
-import BaseIcon from './BaseIcon';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Tick01Icon } from '@hugeicons/core-free-icons';
 
 export default function CheckIcon(props) {
   return (
-    <BaseIcon {...props}>
-      <polyline points="20 6 9 17 4 12" />
-    </BaseIcon>
+    <HugeiconsIcon
+      icon={Tick01Icon}
+      className={props.className}
+      {...props}
+    />
   );
 }
