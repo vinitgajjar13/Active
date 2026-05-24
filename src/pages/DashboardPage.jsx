@@ -88,9 +88,12 @@ function DashboardTrendChart({ data }) {
       <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none">
         <defs>
           <linearGradient id="flowTrendArea" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(44,120,255,0.20)" />
-            <stop offset="100%" stopColor="rgba(44,120,255,0.02)" />
+            <stop offset="0%" stopColor="rgba(59, 130, 246, 0.08)" />
+            <stop offset="100%" stopColor="rgba(59, 130, 246, 0.00)" />
           </linearGradient>
+          <filter id="tooltipShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#0f172a" floodOpacity="0.06" />
+          </filter>
         </defs>
 
         {[0, 0.25, 0.5, 0.75, 1].map((step) => {
@@ -102,8 +105,8 @@ function DashboardTrendChart({ data }) {
               x2={width - right}
               y1={y}
               y2={y}
-              stroke="#e9eef8"
-              strokeDasharray={step === 1 ? "0" : "4 7"}
+              stroke="#f1f5f9"
+              strokeDasharray={step === 1 ? "0" : "4 8"}
             />
           );
         })}
@@ -113,26 +116,26 @@ function DashboardTrendChart({ data }) {
             } L ${attendancePoints[0].x} ${height - bottom} Z`}
           fill="url(#flowTrendArea)"
         />
-        <path d={messagesPath} fill="none" stroke="#c8d1df" strokeWidth="3" strokeLinecap="round" />
-        <path d={attendancePath} fill="none" stroke="#2f89ff" strokeWidth="4" strokeLinecap="round" />
+        <path d={messagesPath} fill="none" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="3 3" strokeLinecap="round" />
+        <path d={attendancePath} fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" />
 
         <line
           x1={hoverPoint.x}
           x2={hoverPoint.x}
           y1={top}
           y2={height - bottom}
-          stroke="#cfe1ff"
-          strokeDasharray="4 6"
+          stroke="#e2e8f0"
+          strokeWidth="1"
         />
-        <circle cx={hoverPoint.x} cy={hoverPoint.y} r="6" fill="#2f89ff" />
-        <circle cx={hoverPoint.x} cy={hoverPoint.y} r="13" fill="rgba(47,137,255,0.14)" />
+        <circle cx={hoverPoint.x} cy={hoverPoint.y} r="5" fill="#ffffff" stroke="#3b82f6" strokeWidth="3" />
+        <circle cx={hoverPoint.x} cy={hoverPoint.y} r="11" fill="rgba(59, 130, 246, 0.06)" />
 
-        <g transform={`translate(${hoverPoint.x - 56}, ${hoverPoint.y - 48})`}>
-          <rect width="112" height="42" rx="12" fill="#1577f3" />
-          <text x="56" y="17" fill="rgba(255,255,255,0.72)" fontSize="10" textAnchor="middle">
-            Students Marked
+        <g transform={`translate(${hoverPoint.x - 58}, ${hoverPoint.y - 54})`}>
+          <rect width="116" height="44" rx="8" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1" filter="url(#tooltipShadow)" />
+          <text x="58" y="16" fill="#94a3b8" fontSize="8" fontWeight="700" letterSpacing="0.05em" textAnchor="middle">
+            STUDENTS MARKED
           </text>
-          <text x="56" y="30" fill="#fff" fontSize="14" fontWeight="700" textAnchor="middle">
+          <text x="58" y="32" fill="#0f172a" fontSize="13" fontWeight="800" textAnchor="middle">
             {formatCount(hoverPoint.attendance)}
           </text>
         </g>
@@ -305,7 +308,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="dashboard-flow__main">
-        <section className="flow-card flow-card--xl">
+        <section className="flow-card flow-card--xl dashboard-trend-card">
           <div className="flow-card__header">
             <div>
               <h3>Attendance Trend</h3>

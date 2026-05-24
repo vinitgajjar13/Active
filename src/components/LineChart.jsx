@@ -29,8 +29,8 @@ export default function LineChart({ data, compact = false }) {
       >
         <defs>
           <linearGradient id={compact ? "lineAreaCompact" : "lineArea"} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(44, 99, 247, 0.22)" />
-            <stop offset="100%" stopColor="rgba(44, 99, 247, 0.03)" />
+            <stop offset="0%" stopColor="rgba(59, 130, 246, 0.08)" />
+            <stop offset="100%" stopColor="rgba(59, 130, 246, 0.00)" />
           </linearGradient>
         </defs>
 
@@ -43,7 +43,7 @@ export default function LineChart({ data, compact = false }) {
                 x2={width - paddingX}
                 y1={y}
                 y2={y}
-                stroke="#edf1fa"
+                stroke="#f1f5f9"
                 strokeDasharray={tick === 0 ? "0" : "4 8"}
               />
               <text x={10} y={y + 4} className="line-chart__tick">
@@ -54,11 +54,11 @@ export default function LineChart({ data, compact = false }) {
         })}
 
         <path d={areaPath} fill={compact ? "url(#lineAreaCompact)" : "url(#lineArea)"} />
-        <path d={linePath} fill="none" stroke="#2c63f7" strokeWidth="3.2" strokeLinecap="round" />
+        <path d={linePath} fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" />
 
         {points.map((point) => (
           <g key={point.day}>
-            <circle cx={point.x} cy={point.y} r="6.2" fill="white" stroke="#2c63f7" strokeWidth="3" />
+            <circle cx={point.x} cy={point.y} r="4" fill="#ffffff" stroke="#3b82f6" strokeWidth="2.5" />
             <text x={point.x} y={height - 12} textAnchor="middle" className="line-chart__label">
               {point.day}
             </text>

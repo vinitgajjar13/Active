@@ -15,7 +15,7 @@ export default function ReportsPage() {
         ))}
       </div>
 
-      <SectionCard title="Performance Report">
+      <SectionCard title="Performance Report" className="reports-trend-card">
         <LineChart data={weeklyTrend} />
       </SectionCard>
     </div>
